@@ -228,6 +228,15 @@ const TaskDetails: React.FC = () => {
     }
   };
 
+  const handleRemoveDelegation = async () => {
+    if (!task) return;
+    
+    try {
+      await assignTask(task.id, null);
+    } catch (error) {
+    }
+  };
+
   const getPriorityLabel = (priority: number) => {
     switch (priority) {
       case 3:
@@ -346,20 +355,20 @@ const TaskDetails: React.FC = () => {
           )}
         </Dates>
         
-        {/* Seção de Atribuição */}
         <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-          <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#333' }}>Atribuir Tarefa</h3>
+          <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#333' }}>Delegação</h3>
           <UserSelector
             users={users}
             selectedUserId={task.assignedToUserId}
             onUserChange={handleAssignTask}
             label="Delegar para"
-            placeholder="Selecione um usuário para atribuir esta tarefa"
+            placeholder="Selecione um usuário"
             loading={usersLoading}
+            editable={false}
           />
           {task.assignedToUserId && (
             <div style={{ marginTop: '8px', fontSize: '14px', color: '#666' }}>
-              Atribuída para: {users.find(u => u.id === task.assignedToUserId)?.name || 'Usuário não encontrado'}
+              Delegada para: {users.find(u => u.id === task.assignedToUserId)?.name || 'Usuário não encontrado'}
             </div>
           )}
         </div>

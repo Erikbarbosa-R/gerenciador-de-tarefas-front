@@ -16,7 +16,7 @@ export interface Task {
     priority: number; // 0 = LOW, 1 = MEDIUM, 2 = HIGH, 3 = CRITICAL
     dueDate?: string;
     userId: string;
-    assignedToUserId?: string;
+    assignedToUserId?: string | null;
     createdAt: string;
     updatedAt?: string;
     isDeleted: boolean;
@@ -28,7 +28,7 @@ export interface CreateTaskData {
   userId: string;
   priority?: number; // 0 = LOW, 1 = MEDIUM, 2 = HIGH, 3 = CRITICAL
   dueDate?: string;
-  assignedToUserId?: string;
+  assignedToUserId?: string | null;
 }
 
 export interface UpdateTaskData {
@@ -37,7 +37,7 @@ export interface UpdateTaskData {
     status?: number; // 0 = PENDING, 1 = IN_PROGRESS, 2 = COMPLETED, 3 = CANCELLED
     priority?: number; // 0 = LOW, 1 = MEDIUM, 2 = HIGH, 3 = CRITICAL
     dueDate?: string;
-    assignedToUserId?: string;
+    assignedToUserId?: string | null;
 }
 
 export interface LoginData {

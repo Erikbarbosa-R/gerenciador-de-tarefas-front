@@ -78,6 +78,11 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       setError(null);
       await taskService.updateTask(id, data, token);
       const updatedTask = await taskService.getTaskById(id, token);
+      
+      if ((data.assignedToUserId === null || data.assignedToUserId === undefined) && updatedTask.assignedToUserId !== null) {
+        updatedTask.assignedToUserId = null;
+      }
+      
       setTasks((prevTasks: Task[]) => 
         prevTasks.map((task: Task) => 
           task.id === id ? updatedTask : task

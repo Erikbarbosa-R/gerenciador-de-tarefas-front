@@ -60,7 +60,13 @@ class TaskService {
   }
 
   async updateTask(id: string, data: UpdateTaskData, token: string): Promise<void> {
-    await apiService.patch(`/tasks/${id}`, data, token);
+    const cleanData = { ...data };
+    
+    if (cleanData.assignedToUserId === '' || cleanData.assignedToUserId === undefined) {
+      cleanData.assignedToUserId = null;
+    }
+    
+    await apiService.patch(`/tasks/${id}`, cleanData, token);
   }
 
   async deleteTask(id: string, token: string): Promise<void> {

@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MdClose } from 'react-icons/md';
+import Icon from './Icon';
 
 interface User {
   id: string;
@@ -9,12 +11,14 @@ interface User {
 
 interface UserSelectorProps {
   users: User[];
-  selectedUserId?: string;
+  selectedUserId?: string | null;
   onUserChange: (userId: string | null) => void;
+  onRemoveUser?: () => void;
   label?: string;
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
+  editable?: boolean;
 }
 
 const SelectorContainer = styled.div`
@@ -28,9 +32,17 @@ const Label = styled.label`
   color: #333;
 `;
 
-const StyledSelect = styled.select<{ hasError?: boolean }>`
+const SelectWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledSelect = styled.select.withConfig({
+  shouldForwardProp: (prop) => !['hasError', 'hasSelectedUser'].includes(prop),
+})<{ hasError?: boolean; hasSelectedUser?: boolean }>`
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px ${({ hasSelectedUser }) => (hasSelectedUser ? '40px' : '12px')} 10px 12px;
   border: 1px solid ${({ hasError }) => (hasError ? '#dc3545' : '#ddd')};
   border-radius: 6px;
   font-size: 14px;
@@ -50,6 +62,30 @@ const StyledSelect = styled.select<{ hasError?: boolean }>`
   }
 `;
 
+const RemoveButton = styled.button`
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8d7da;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  }
+`;
+
 const ErrorMessage = styled.div`
   color: #dc3545;
   font-size: 12px;
@@ -60,14 +96,24 @@ const UserSelector: React.FC<UserSelectorProps> = ({
   users,
   selectedUserId,
   onUserChange,
+  onRemoveUser,
   label = 'Atribuir para',
   placeholder = 'Selecione um usuário',
   disabled = false,
   loading = false,
+  editable = false,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     onUserChange(value === '' ? null : value);
+  };
+
+  const handleRemoveUser = () => {
+    if (onRemoveUser) {
+      onRemoveUser();
+    } else {
+      onUserChange(null);
+    }
   };
 
   // Se está carregando, mostrar loading
@@ -75,9 +121,11 @@ const UserSelector: React.FC<UserSelectorProps> = ({
     return (
       <SelectorContainer>
         <Label>{label}</Label>
-        <StyledSelect disabled>
-          <option value="">Carregando usuários...</option>
-        </StyledSelect>
+        <SelectWrapper>
+          <StyledSelect disabled>
+            <option value="">Carregando usuários...</option>
+          </StyledSelect>
+        </SelectWrapper>
       </SelectorContainer>
     );
   }
@@ -87,9 +135,11 @@ const UserSelector: React.FC<UserSelectorProps> = ({
     return (
       <SelectorContainer>
         <Label>{label}</Label>
-        <StyledSelect disabled>
-          <option value="">Atribuição não disponível</option>
-        </StyledSelect>
+        <SelectWrapper>
+          <StyledSelect disabled>
+            <option value="">Atribuição não disponível</option>
+          </StyledSelect>
+        </SelectWrapper>
         <ErrorMessage>
           Campo opcional: Não foi possível carregar usuários do backend
         </ErrorMessage>
@@ -97,21 +147,35 @@ const UserSelector: React.FC<UserSelectorProps> = ({
     );
   }
 
+  const showRemoveButton = editable && !!selectedUserId;
+
   return (
     <SelectorContainer>
       <Label>{label}</Label>
-      <StyledSelect
-        value={selectedUserId || ''}
-        onChange={handleChange}
-        disabled={disabled}
-      >
-        <option value="">{placeholder}</option>
-        {users.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.name} ({user.email})
-          </option>
-        ))}
-      </StyledSelect>
+      <SelectWrapper>
+        <StyledSelect
+          value={selectedUserId || ''}
+          onChange={handleChange}
+          disabled={disabled}
+          hasSelectedUser={showRemoveButton}
+        >
+          <option value="">{placeholder}</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name} ({user.email})
+            </option>
+          ))}
+        </StyledSelect>
+        {showRemoveButton && (
+          <RemoveButton
+            type="button"
+            onClick={handleRemoveUser}
+            title="Remover"
+          >
+            <Icon icon={MdClose} size={16} />
+          </RemoveButton>
+        )}
+      </SelectWrapper>
     </SelectorContainer>
   );
 };

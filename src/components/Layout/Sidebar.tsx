@@ -39,7 +39,9 @@ const NavItem = styled.li`
   margin-bottom: 8px;
 `;
 
-const NavLink = styled(Link)<{ isActive?: boolean }>`
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   padding: 12px 20px;
