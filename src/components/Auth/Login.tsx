@@ -86,39 +86,51 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🔍 Iniciando login...');
     setLoading(true);
     setError('');
     setIsCredentialsError(false);
 
     try {
       await login(formData);
+      console.log('✅ Login bem-sucedido');
       navigate('/');
     } catch (error: any) {
+      console.log('❌ Erro capturado:', error);
       let errorMessage = 'Erro ao fazer login';
       let isCredentials = false;
       
       if (error.status === 401) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
+        console.log('🔐 Erro 401 - credenciais incorretas');
       } else if (error.status === 404) {
         errorMessage = 'Servidor não encontrado. Verifique se o backend está rodando.';
+        console.log('🌐 Erro 404 - servidor não encontrado');
       } else if (error.status === 500) {
         errorMessage = 'Erro interno do servidor';
+        console.log('💥 Erro 500 - servidor interno');
       } else if (error.message && error.message.includes('credenciais')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
+        console.log('🔐 Erro por mensagem - credenciais');
       } else if (error.message && error.message.includes('password')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
+        console.log('🔐 Erro por mensagem - password');
       } else if (error.message && error.message.includes('invalid')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
+        console.log('🔐 Erro por mensagem - invalid');
       } else if (error.message) {
         errorMessage = error.message;
+        console.log('📝 Mensagem de erro:', error.message);
       }
       
+      console.log('🎯 Definindo erro:', errorMessage);
       setError(errorMessage);
       setIsCredentialsError(isCredentials);
+      console.log('✅ Estado atualizado');
     } finally {
       setLoading(false);
     }
