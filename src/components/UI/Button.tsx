@@ -11,7 +11,9 @@ interface ButtonProps {
   children: React.ReactNode;
 }
 
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['variant', 'size'].includes(prop),
+})<ButtonProps>`
   cursor: pointer;
   border: none;
   border-radius: 6px;

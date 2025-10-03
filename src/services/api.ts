@@ -37,7 +37,8 @@ class ApiService {
         return response;
       },
       (error) => {
-        if (error.response?.status === 401) {
+        // Não redirecionar automaticamente se estiver na página de login
+        if (error.response?.status === 401 && !window.location.pathname.includes('/login')) {
           localStorage.removeItem('token');
           window.location.href = '/login';
         }
