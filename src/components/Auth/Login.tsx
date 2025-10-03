@@ -77,59 +77,39 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Iniciando login...');
     setLoading(true);
     setIsCredentialsError(false);
 
     try {
       await login(formData);
-      console.log('Login bem-sucedido');
       toast.success('Login realizado com sucesso!');
       navigate('/');
     } catch (error: any) {
-      console.log('Erro capturado:', error);
-      let errorMessage = 'Erro ao fazer login';
       let isCredentials = false;
       
       if (error.status === 401) {
-        errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
-        console.log('Erro 401 - credenciais incorretas');
         toast.error('Email ou senha incorretos');
       } else if (error.status === 404) {
-        errorMessage = 'Servidor não encontrado. Verifique se o backend está rodando.';
-        console.log('Erro 404 - servidor não encontrado');
         toast.error('Servidor não encontrado. Verifique se o backend está rodando.');
       } else if (error.status === 500) {
-        errorMessage = 'Erro interno do servidor';
-        console.log('Erro 500 - servidor interno');
         toast.error('Erro interno do servidor');
       } else if (error.message && error.message.includes('credenciais')) {
-        errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
-        console.log('Erro por mensagem - credenciais');
         toast.error('Email ou senha incorretos');
       } else if (error.message && error.message.includes('password')) {
-        errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
-        console.log('Erro por mensagem - password');
         toast.error('Email ou senha incorretos');
       } else if (error.message && error.message.includes('invalid')) {
-        errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
-        console.log('Erro por mensagem - invalid');
         toast.error('Email ou senha incorretos');
       } else if (error.message) {
-        errorMessage = error.message;
-        console.log('Mensagem de erro:', error.message);
         toast.error(error.message);
       } else {
         toast.error('Erro ao fazer login');
       }
       
-      console.log('Definindo erro:', errorMessage);
       setIsCredentialsError(isCredentials);
-      console.log('Estado atualizado');
     } finally {
       setLoading(false);
     }
