@@ -175,11 +175,7 @@ const Register: React.FC = () => {
           <PasswordRequirements>
             <strong>Requisitos da senha:</strong>
             <ul>
-              <li>Mínimo de 8 caracteres</li>
-              <li>Pelo menos 1 letra maiúscula</li>
-              <li>Pelo menos 1 letra minúscula</li>
-              <li>Pelo menos 1 número</li>
-              <li>Pelo menos 1 caractere especial (!@#$%^&*)</li>
+              <li>Mínimo de 6 caracteres</li>
             </ul>
           </PasswordRequirements>
           
