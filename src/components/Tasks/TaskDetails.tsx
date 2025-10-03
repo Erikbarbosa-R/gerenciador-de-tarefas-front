@@ -12,7 +12,8 @@ import {
   MdEdit, 
   MdDelete, 
   MdCalendarToday,
-  MdWarning
+  MdWarning,
+  MdClose
 } from 'react-icons/md';
 import Icon from '../UI/Icon';
 import { formatDate, isOverdue } from '../../utils/dateUtils';
@@ -186,6 +187,60 @@ const ErrorMessage = styled.div`
   margin-bottom: 20px;
   border: 1px solid #f5c6cb;
   text-align: center;
+`;
+
+const AssignmentSection = styled.div`
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+`;
+
+const AssignmentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const AssignmentTitle = styled.h3`
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+`;
+
+const RemoveButton = styled.button`
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8d7da;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  }
+`;
+
+const AssignedUserInfo = styled.div`
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #e7f3ff;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #0066cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TaskDetails: React.FC = () => {
@@ -366,6 +421,7 @@ const TaskDetails: React.FC = () => {
             loading={usersLoading}
             editable={false}
           />
+          
           {task.assignedToUserId && (
             <div style={{ marginTop: '8px', fontSize: '14px', color: '#666' }}>
               Delegada para: {users.find(u => u.id === task.assignedToUserId)?.name || 'Usuário não encontrado'}
