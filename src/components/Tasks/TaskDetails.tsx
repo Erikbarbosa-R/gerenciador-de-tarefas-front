@@ -12,7 +12,8 @@ import {
   MdEdit, 
   MdDelete, 
   MdCalendarToday,
-  MdWarning
+  MdWarning,
+  MdClose
 } from 'react-icons/md';
 import Icon from '../UI/Icon';
 import { formatDate, isOverdue } from '../../utils/dateUtils';
@@ -188,6 +189,60 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+const AssignmentSection = styled.div`
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+`;
+
+const AssignmentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const AssignmentTitle = styled.h3`
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+`;
+
+const RemoveButton = styled.button`
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8d7da;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  }
+`;
+
+const AssignedUserInfo = styled.div`
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #e7f3ff;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #0066cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { getTaskById, updateTask, deleteTask, assignTask, loading } = useTasks();
@@ -224,6 +279,15 @@ const TaskDetails: React.FC = () => {
     
     try {
       await assignTask(task.id, assignedToUserId);
+    } catch (error) {
+    }
+  };
+
+  const handleRemoveAssignment = async () => {
+    if (!task) return;
+    
+    try {
+      await assignTask(task.id, null);
     } catch (error) {
     }
   };
@@ -347,8 +411,19 @@ const TaskDetails: React.FC = () => {
         </Dates>
         
         {/* Seção de Atribuição */}
-        <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-          <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#333' }}>Atribuir Tarefa</h3>
+        <AssignmentSection>
+          <AssignmentHeader>
+            <AssignmentTitle>Atribuir Tarefa</AssignmentTitle>
+            {task.assignedToUserId && (
+              <RemoveButton
+                onClick={handleRemoveAssignment}
+                title="Remover delegação"
+              >
+                <Icon icon={MdClose} size={16} />
+              </RemoveButton>
+            )}
+          </AssignmentHeader>
+          
           <UserSelector
             users={users}
             selectedUserId={task.assignedToUserId}
@@ -357,12 +432,15 @@ const TaskDetails: React.FC = () => {
             placeholder="Selecione um usuário para atribuir esta tarefa"
             loading={usersLoading}
           />
+          
           {task.assignedToUserId && (
-            <div style={{ marginTop: '8px', fontSize: '14px', color: '#666' }}>
-              Atribuída para: {users.find(u => u.id === task.assignedToUserId)?.name || 'Usuário não encontrado'}
-            </div>
+            <AssignedUserInfo>
+              <span>
+                Atribuída para: {users.find(u => u.id === task.assignedToUserId)?.name || 'Usuário não encontrado'}
+              </span>
+            </AssignedUserInfo>
           )}
-        </div>
+        </AssignmentSection>
         
         <Actions>
           <Button

@@ -49,25 +49,6 @@ const FilterTitle = styled.h3`
   gap: 8px;
 `;
 
-const ToggleAdvancedButton = styled.button`
-  background: none;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #666;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #f8f9fa;
-    border-color: #007bff;
-    color: #007bff;
-  }
-`;
 
 const FilterGroup = styled.div`
   margin-bottom: 16px;
@@ -86,13 +67,6 @@ const FilterContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const AdvancedFilters = styled.div<{ show: boolean }>`
-  display: ${({ show }) => show ? 'block' : 'none'};
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-`;
 
 const FilterButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== 'active',
@@ -149,7 +123,7 @@ const ErrorMessage = styled.div`
   border: 1px solid #f5c6cb;
 `;
 
-type FilterType = 'all' | 'my-tasks' | 'my-pending' | 'my-completed' | 'my-high-priority' | 'status-0' | 'status-1' | 'status-2' | 'priority-0' | 'priority-1' | 'priority-2' | 'priority-3';
+type FilterType = 'all' | 'my-tasks' | 'my-pending' | 'my-completed';
 
 const TaskList: React.FC = () => {
   const { 
@@ -159,13 +133,9 @@ const TaskList: React.FC = () => {
     refreshTasks,
     getMyTasks,
     getMyPendingTasks,
-    getMyCompletedTasks,
-    getMyHighPriorityTasks,
-    getTasksByStatus,
-    getTasksByPriority
+    getMyCompletedTasks
   } = useTasks();
   const [filter, setFilter] = useState<FilterType>('all');
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [isFilterLoading, setIsFilterLoading] = useState(false);
   const [currentFilterName, setCurrentFilterName] = useState<FilterType>('all');
 
@@ -211,30 +181,6 @@ const TaskList: React.FC = () => {
           break;
         case 'my-completed':
           await getMyCompletedTasks();
-          break;
-        case 'my-high-priority':
-          await getMyHighPriorityTasks();
-          break;
-        case 'status-0':
-          await getTasksByStatus(0);
-          break;
-        case 'status-1':
-          await getTasksByStatus(1);
-          break;
-        case 'status-2':
-          await getTasksByStatus(2);
-          break;
-        case 'priority-0':
-          await getTasksByPriority(0);
-          break;
-        case 'priority-1':
-          await getTasksByPriority(1);
-          break;
-        case 'priority-2':
-          await getTasksByPriority(2);
-          break;
-        case 'priority-3':
-          await getTasksByPriority(3);
           break;
       }
     } catch (error) {
@@ -289,10 +235,6 @@ const TaskList: React.FC = () => {
             <Icon icon={MdFilterList} size={20} />
             Filtros
           </FilterTitle>
-          <ToggleAdvancedButton onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
-            <Icon icon={MdFilterList} size={16} />
-            {showAdvancedFilters ? 'Ocultar' : 'Avançados'}
-          </ToggleAdvancedButton>
         </FilterHeader>
 
         <FilterGroup>
@@ -322,70 +264,8 @@ const TaskList: React.FC = () => {
             >
               Minhas Concluídas
             </FilterButton>
-            <FilterButton
-              active={filter === 'my-high-priority'}
-              onClick={() => handleFilterChange('my-high-priority')}
-            >
-              Minhas Urgentes
-            </FilterButton>
           </FilterContainer>
         </FilterGroup>
-
-        <AdvancedFilters show={showAdvancedFilters}>
-          <FilterGroup>
-            <FilterGroupTitle>Por Status</FilterGroupTitle>
-            <FilterContainer>
-              <FilterButton
-                active={filter === 'status-0'}
-                onClick={() => handleFilterChange('status-0')}
-              >
-                Pendentes
-              </FilterButton>
-              <FilterButton
-                active={filter === 'status-1'}
-                onClick={() => handleFilterChange('status-1')}
-              >
-                Em Progresso
-              </FilterButton>
-              <FilterButton
-                active={filter === 'status-2'}
-                onClick={() => handleFilterChange('status-2')}
-              >
-                Concluídas
-              </FilterButton>
-            </FilterContainer>
-          </FilterGroup>
-
-          <FilterGroup>
-            <FilterGroupTitle>Por Prioridade</FilterGroupTitle>
-            <FilterContainer>
-              <FilterButton
-                active={filter === 'priority-0'}
-                onClick={() => handleFilterChange('priority-0')}
-              >
-                Baixa
-              </FilterButton>
-              <FilterButton
-                active={filter === 'priority-1'}
-                onClick={() => handleFilterChange('priority-1')}
-              >
-                Média
-              </FilterButton>
-              <FilterButton
-                active={filter === 'priority-2'}
-                onClick={() => handleFilterChange('priority-2')}
-              >
-                Alta
-              </FilterButton>
-              <FilterButton
-                active={filter === 'priority-3'}
-                onClick={() => handleFilterChange('priority-3')}
-              >
-                Crítica
-              </FilterButton>
-            </FilterContainer>
-          </FilterGroup>
-        </AdvancedFilters>
       </FilterSection>
 
       {isFilterLoading ? (
@@ -402,9 +282,7 @@ const TaskList: React.FC = () => {
             {filter === 'all' ? 'Nenhuma tarefa encontrada' : 
              filter === 'my-tasks' ? 'Nenhuma tarefa delegada para você' :
              filter === 'my-pending' ? 'Nenhuma tarefa pendente delegada para você' :
-             filter === 'my-high-priority' ? 'Nenhuma tarefa urgente delegada para você' :
-             filter.startsWith('status-') ? `Nenhuma tarefa com status ${filter.split('-')[1]}` :
-             filter.startsWith('priority-') ? `Nenhuma tarefa com prioridade ${filter.split('-')[1]}` :
+             filter === 'my-completed' ? 'Nenhuma tarefa concluída delegada para você' :
              'Nenhuma tarefa encontrada'}
           </EmptyTitle>
           <EmptyText>
@@ -414,8 +292,8 @@ const TaskList: React.FC = () => {
               ? 'Você não tem tarefas delegadas no momento.'
               : filter === 'my-pending'
               ? 'Você não tem tarefas pendentes delegadas no momento.'
-              : filter === 'my-high-priority'
-              ? 'Você não tem tarefas urgentes delegadas no momento.'
+              : filter === 'my-completed'
+              ? 'Você não tem tarefas concluídas delegadas no momento.'
               : 'Não há tarefas com os filtros selecionados no momento.'
             }
           </EmptyText>

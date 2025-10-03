@@ -69,12 +69,17 @@ const TaskForm: React.FC = () => {
   const isEditing = !!id;
   const task = id ? getTaskById(id) : undefined;
 
+  // Obter data mínima (hoje)
+  const getMinDate = () => {
+    return new Date().toISOString().split('T')[0];
+  };
+
   const [formData, setFormData] = useState<CreateTaskData>({
     title: '',
     description: '',
     userId: '',
     priority: TaskPriority.MEDIUM,
-    dueDate: '',
+    dueDate: getMinDate(),
     assignedToUserId: '',
   });
   
@@ -114,6 +119,13 @@ const TaskForm: React.FC = () => {
     e.preventDefault();
     setSubmitting(true);
     setError('');
+
+    // Validar data de vencimento
+    if (formData.dueDate && formData.dueDate < getMinDate()) {
+      setError('A data de vencimento deve ser a partir de hoje');
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const submitData = {
@@ -210,7 +222,7 @@ const TaskForm: React.FC = () => {
             type="date"
             value={formData.dueDate || ''}
             onChange={handleChange}
-            min={new Date().toISOString().split('T')[0]}
+            min={getMinDate()}
           />
         </FormGroup>
 
@@ -220,7 +232,7 @@ const TaskForm: React.FC = () => {
             selectedUserId={formData.assignedToUserId}
             onUserChange={(userId) => setFormData(prev => ({ ...prev, assignedToUserId: userId || '' }))}
             label="Atribuir para (opcional)"
-            placeholder="Selecione um usuário (opcional)"
+            placeholder="Selecione um usuário"
             loading={usersLoading}
           />
         </FormGroup>
