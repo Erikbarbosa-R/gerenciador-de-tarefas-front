@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
 import Input from '../UI/Input';
+import PasswordInput from '../UI/PasswordInput';
 import Button from '../UI/Button';
 import { RegisterData } from '../../types';
 
@@ -58,6 +59,31 @@ const StyledLink = styled(Link)`
 
   &:hover {
     text-decoration: underline;
+  }
+`;
+
+const PasswordRequirements = styled.div`
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #495057;
+
+  strong {
+    color: #212529;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+
+  li {
+    margin-bottom: 4px;
   }
 `;
 
@@ -137,8 +163,7 @@ const Register: React.FC = () => {
             required
           />
           
-          <Input
-            type="password"
+          <PasswordInput
             name="password"
             label="Senha"
             placeholder="Digite sua senha"
@@ -146,6 +171,17 @@ const Register: React.FC = () => {
             onChange={handleChange}
             required
           />
+          
+          <PasswordRequirements>
+            <strong>Requisitos da senha:</strong>
+            <ul>
+              <li>Mínimo de 8 caracteres</li>
+              <li>Pelo menos 1 letra maiúscula</li>
+              <li>Pelo menos 1 letra minúscula</li>
+              <li>Pelo menos 1 número</li>
+              <li>Pelo menos 1 caractere especial (!@#$%^&*)</li>
+            </ul>
+          </PasswordRequirements>
           
           <Button
             type="submit"

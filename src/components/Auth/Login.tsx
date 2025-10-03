@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
 import Input from '../UI/Input';
+import PasswordInput from '../UI/PasswordInput';
 import Button from '../UI/Button';
 import { LoginData } from '../../types';
 
@@ -142,8 +143,7 @@ const Login: React.FC = () => {
             required
           />
           
-          <Input
-            type="password"
+          <PasswordInput
             name="password"
             label="Senha"
             placeholder="Digite sua senha"
