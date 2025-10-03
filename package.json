@@ -10,6 +10,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
     "styled-components": "^6.1.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@types/node": "^24.6.1",
     "@types/react": "^19.1.17",
-    "@types/react-dom": "^19.1.11"
+    "@types/react-dom": "^19.1.11",
+    "@types/react-toastify": "^4.0.2"
   }
 }

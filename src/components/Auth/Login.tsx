@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import Input from '../UI/Input';
 import PasswordInput from '../UI/PasswordInput';
@@ -38,14 +39,6 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const ErrorMessage = styled.div`
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  border: 1px solid #f5c6cb;
-`;
 
 const LinkContainer = styled.div`
   text-align: center;
@@ -67,7 +60,6 @@ const Login: React.FC = () => {
     email: '',
     password: '',
   });
-  const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [isCredentialsError, setIsCredentialsError] = useState(false);
   
@@ -80,7 +72,6 @@ const Login: React.FC = () => {
       ...prev,
       [name]: value,
     }));
-    setError('');
     setIsCredentialsError(false);
   };
 
@@ -88,12 +79,12 @@ const Login: React.FC = () => {
     e.preventDefault();
     console.log('Iniciando login...');
     setLoading(true);
-    setError('');
     setIsCredentialsError(false);
 
     try {
       await login(formData);
       console.log('Login bem-sucedido');
+      toast.success('Login realizado com sucesso!');
       navigate('/');
     } catch (error: any) {
       console.log('Erro capturado:', error);
@@ -104,31 +95,39 @@ const Login: React.FC = () => {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
         console.log('Erro 401 - credenciais incorretas');
+        toast.error('Email ou senha incorretos');
       } else if (error.status === 404) {
         errorMessage = 'Servidor não encontrado. Verifique se o backend está rodando.';
         console.log('Erro 404 - servidor não encontrado');
+        toast.error('Servidor não encontrado. Verifique se o backend está rodando.');
       } else if (error.status === 500) {
         errorMessage = 'Erro interno do servidor';
         console.log('Erro 500 - servidor interno');
+        toast.error('Erro interno do servidor');
       } else if (error.message && error.message.includes('credenciais')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
         console.log('Erro por mensagem - credenciais');
+        toast.error('Email ou senha incorretos');
       } else if (error.message && error.message.includes('password')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
         console.log('Erro por mensagem - password');
+        toast.error('Email ou senha incorretos');
       } else if (error.message && error.message.includes('invalid')) {
         errorMessage = 'Email ou senha incorretos';
         isCredentials = true;
         console.log('Erro por mensagem - invalid');
+        toast.error('Email ou senha incorretos');
       } else if (error.message) {
         errorMessage = error.message;
         console.log('Mensagem de erro:', error.message);
+        toast.error(error.message);
+      } else {
+        toast.error('Erro ao fazer login');
       }
       
       console.log('Definindo erro:', errorMessage);
-      setError(errorMessage);
       setIsCredentialsError(isCredentials);
       console.log('Estado atualizado');
     } finally {
@@ -140,22 +139,6 @@ const Login: React.FC = () => {
     <LoginContainer>
       <LoginCard>
         <Title>Entrar</Title>
-        
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        
-        {/* Teste visual temporário */}
-        {error && (
-          <div style={{
-            background: '#dc3545',
-            color: 'white',
-            padding: '10px',
-            borderRadius: '4px',
-            marginBottom: '10px',
-            fontSize: '14px'
-          }}>
-            TESTE: {error}
-          </div>
-        )}
         
         <Form onSubmit={handleSubmit}>
           <Input

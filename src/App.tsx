@@ -1,5 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout/Layout';
 import Login from './components/Auth/Login';
@@ -17,38 +19,53 @@ const App: React.FC = () => {
   }
 
   return (
-    <Routes>
-      {/* Rotas públicas */}
-      <Route 
-        path="/login" 
-        element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} 
-      />
-      <Route 
-        path="/register" 
-        element={!isAuthenticated ? <Register /> : <Navigate to="/" replace />} 
-      />
+    <>
+      <Routes>
+        {/* Rotas públicas */}
+        <Route 
+          path="/login" 
+          element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} 
+        />
+        <Route 
+          path="/register" 
+          element={!isAuthenticated ? <Register /> : <Navigate to="/" replace />} 
+        />
+        
+        {/* Rotas protegidas */}
+        <Route 
+          path="/*" 
+          element={
+            isAuthenticated ? (
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<TaskList />} />
+                  <Route path="/tasks" element={<TaskList />} />
+                  <Route path="/tasks/new" element={<TaskForm />} />
+                  <Route path="/tasks/:id" element={<TaskDetails />} />
+                  <Route path="/tasks/:id/edit" element={<TaskForm />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } 
+        />
+      </Routes>
       
-      {/* Rotas protegidas */}
-      <Route 
-        path="/*" 
-        element={
-          isAuthenticated ? (
-            <Layout>
-              <Routes>
-                <Route path="/" element={<TaskList />} />
-                <Route path="/tasks" element={<TaskList />} />
-                <Route path="/tasks/new" element={<TaskForm />} />
-                <Route path="/tasks/:id" element={<TaskDetails />} />
-                <Route path="/tasks/:id/edit" element={<TaskForm />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Layout>
-          ) : (
-            <Navigate to="/login" replace />
-          )
-        } 
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
       />
-    </Routes>
+    </>
   );
 };
 
