@@ -146,16 +146,6 @@ const Login: React.FC = () => {
           </Button>
         </Form>
         
-        <div style={{ textAlign: 'center', marginTop: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '6px', fontSize: '14px' }}>
-          <strong>🔧 Dicas para debug:</strong>
-          <br />
-          1. Abra o Console (F12) para ver logs detalhados
-          <br />
-          2. Se não tem conta, use o botão "Cadastre-se" abaixo
-          <br />
-          3. Verifique se o backend está online
-        </div>
-        
         <LinkContainer>
           <p>
             Não tem uma conta?{' '}
