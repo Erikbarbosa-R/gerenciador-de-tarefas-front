@@ -43,7 +43,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       setTasks(tasksData);
     } catch (error: any) {
       setError('Erro ao carregar tarefas');
-      console.error('Erro ao carregar tarefas:', error);
     } finally {
       setLoading(false);
     }
@@ -160,7 +159,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar minhas tarefas');
-      console.error('Erro ao carregar minhas tarefas:', error);
     } finally {
       setLoading(false);
     }
@@ -198,7 +196,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar tarefas pendentes');
-      console.error('Erro ao carregar tarefas pendentes:', error);
     } finally {
       setLoading(false);
     }
@@ -236,7 +233,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar tarefas concluídas');
-      console.error('Erro ao carregar tarefas concluídas:', error);
     } finally {
       setLoading(false);
     }
@@ -274,7 +270,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar tarefas de alta prioridade');
-      console.error('Erro ao carregar tarefas de alta prioridade:', error);
     } finally {
       setLoading(false);
     }
@@ -312,7 +307,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar tarefas por status');
-      console.error('Erro ao carregar tarefas por status:', error);
     } finally {
       setLoading(false);
     }
@@ -350,7 +344,6 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }: TaskProv
       }
     } catch (error: any) {
       setError('Erro ao carregar tarefas por prioridade');
-      console.error('Erro ao carregar tarefas por prioridade:', error);
     } finally {
       setLoading(false);
     }

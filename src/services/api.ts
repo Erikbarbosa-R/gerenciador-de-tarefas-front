@@ -97,7 +97,6 @@ export const testBackendConnection = async (): Promise<boolean> => {
     
     return response.ok;
   } catch (error) {
-    console.error('Erro na conexão:', error);
     return false;
   }
 };

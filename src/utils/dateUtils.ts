@@ -5,7 +5,6 @@ export const formatDate = (dateString: string | undefined): string => {
     const date = new Date(dateString);
     
     if (isNaN(date.getTime())) {
-      console.warn('Data inválida recebida:', dateString);
       return 'Data inválida';
     }
     
@@ -18,7 +17,6 @@ export const formatDate = (dateString: string | undefined): string => {
       timeZone: 'America/Sao_Paulo',
     });
   } catch (error) {
-    console.error('Erro ao formatar data:', error, 'Data recebida:', dateString);
     return 'Erro na data';
   }
 };
@@ -30,7 +28,6 @@ export const formatDateOnly = (dateString: string | undefined): string => {
     const date = new Date(dateString);
     
     if (isNaN(date.getTime())) {
-      console.warn('Data inválida recebida:', dateString);
       return 'Data inválida';
     }
     
@@ -41,7 +38,6 @@ export const formatDateOnly = (dateString: string | undefined): string => {
       timeZone: 'America/Sao_Paulo',
     });
   } catch (error) {
-    console.error('Erro ao formatar data:', error, 'Data recebida:', dateString);
     return 'Erro na data';
   }
 };
@@ -53,7 +49,6 @@ export const formatTimeOnly = (dateString: string | undefined): string => {
     const date = new Date(dateString);
     
     if (isNaN(date.getTime())) {
-      console.warn('Data inválida recebida:', dateString);
       return 'Data inválida';
     }
     
@@ -63,7 +58,6 @@ export const formatTimeOnly = (dateString: string | undefined): string => {
       timeZone: 'America/Sao_Paulo',
     });
   } catch (error) {
-    console.error('Erro ao formatar horário:', error, 'Data recebida:', dateString);
     return 'Erro no horário';
   }
 };
@@ -80,7 +74,6 @@ export const isOverdue = (dueDate: string | undefined, status: number): boolean 
     
     return dueDateOnly < nowDateOnly;
   } catch (error) {
-    console.error('Erro ao verificar se está vencida:', error);
     return false;
   }
 };

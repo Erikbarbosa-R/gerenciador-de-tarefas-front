@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTasks } from '../../contexts/TaskContext';
-import { useAuth } from '../../contexts/AuthContext';
 import Button from '../UI/Button';
 import TaskCard from './TaskCard';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -165,7 +164,6 @@ const TaskList: React.FC = () => {
     getTasksByStatus,
     getTasksByPriority
   } = useTasks();
-  const { user } = useAuth();
   const [filter, setFilter] = useState<FilterType>('all');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [isFilterLoading, setIsFilterLoading] = useState(false);
@@ -175,7 +173,6 @@ const TaskList: React.FC = () => {
   useEffect(() => {
     const savedFilter = localStorage.getItem('taskFilter') as FilterType;
     if (savedFilter && savedFilter !== 'all') {
-      console.log('🔄 Restaurando filtro salvo:', savedFilter);
       setFilter(savedFilter);
       setCurrentFilterName(savedFilter);
       // Aplicar o filtro salvo automaticamente sem usar handleFilterChange
@@ -188,17 +185,11 @@ const TaskList: React.FC = () => {
   useEffect(() => {
     if (filter !== 'all') {
       localStorage.setItem('taskFilter', filter);
-      console.log('💾 Filtro salvo:', filter);
     } else {
       localStorage.removeItem('taskFilter');
-      console.log('🗑️ Filtro removido do localStorage');
     }
   }, [filter]);
 
-  console.log('📋 TaskList - tasks recebidas:', tasks);
-  console.log('📋 TaskList - tipo de tasks:', typeof tasks);
-  console.log('📋 TaskList - é array?', Array.isArray(tasks));
-  console.log('👤 TaskList - usuário logado:', user);
 
   // Garantir que tasks seja sempre um array
   const safeTasks = Array.isArray(tasks) ? tasks : [];
@@ -247,7 +238,6 @@ const TaskList: React.FC = () => {
           break;
       }
     } catch (error) {
-      console.error('Erro ao aplicar filtro:', error);
     } finally {
       setTimeout(() => {
         setIsFilterLoading(false);

@@ -34,7 +34,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } catch (error: any) {
       const errorMessage = error.message || 'Erro ao carregar usuários do backend';
       setError(errorMessage);
-      console.error('Erro ao carregar usuários:', error);
     } finally {
       setLoading(false);
     }
@@ -47,7 +46,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const user = await authService.getUserById(id, token);
       return user;
     } catch (error: any) {
-      console.error('Erro ao buscar usuário:', error);
       throw error;
     }
   }, [token]);

@@ -204,7 +204,6 @@ const TaskDetails: React.FC = () => {
       const newStatus = isTaskCompleted(task) ? 0 : 2;
       await updateTask(task.id, { status: newStatus });
     } catch (error) {
-      console.error('Erro ao atualizar tarefa:', error);
     }
   };
 
@@ -216,7 +215,6 @@ const TaskDetails: React.FC = () => {
         await deleteTask(task.id);
         navigate('/');
       } catch (error) {
-        console.error('Erro ao deletar tarefa:', error);
       }
     }
   };
@@ -227,7 +225,6 @@ const TaskDetails: React.FC = () => {
     try {
       await assignTask(task.id, assignedToUserId);
     } catch (error) {
-      console.error('Erro ao atribuir tarefa:', error);
     }
   };
 

@@ -34,9 +34,6 @@ const UserName = styled.span`
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
   
-  console.log('📋 Header - usuário atual:', user);
-  console.log('📋 Header - nome do usuário:', user?.name);
-  console.log('📋 Header - usuário existe?', !!user);
 
   return (
     <HeaderContainer>

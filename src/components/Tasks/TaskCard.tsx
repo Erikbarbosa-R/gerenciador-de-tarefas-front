@@ -140,7 +140,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       try {
         await deleteTask(task.id);
       } catch (error) {
-        console.error('Erro ao deletar tarefa:', error);
       }
     }
   };
@@ -155,7 +154,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       const newStatus = task.status === 2 ? 0 : 2; // Alternar entre PENDING e COMPLETED
       await updateTask(task.id, { status: newStatus });
     } catch (error) {
-      console.error('Erro ao atualizar tarefa:', error);
     }
   };
 

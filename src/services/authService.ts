@@ -23,7 +23,6 @@ class AuthService {
           const userData = JSON.parse(savedUserData);
           return userData;
         } catch (error) {
-          console.error('Erro ao parsear dados do localStorage:', error);
         }
       }
       

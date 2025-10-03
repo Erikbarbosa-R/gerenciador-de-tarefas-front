@@ -7,7 +7,6 @@ class UserService {
       const response = await apiService.get<User[]>('/users', token);
       return response;
     } catch (error: any) {
-      console.error('Erro ao buscar usuários:', error);
       throw new Error(`Erro ao buscar usuários: ${error.message}`);
     }
   }
@@ -17,7 +16,6 @@ class UserService {
       const response = await apiService.get<User>(`/users/${id}`, token);
       return response;
     } catch (error: any) {
-      console.error('Erro ao buscar usuário:', error);
       throw new Error(`Erro ao buscar usuário: ${error.message}`);
     }
   }

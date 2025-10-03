@@ -34,7 +34,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }: AuthProv
           setUser(userData);
         }
       } catch (error) {
-        console.error('Erro ao inicializar autenticação:', error);
         localStorage.removeItem('token');
       } finally {
         setLoading(false);
@@ -45,32 +44,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }: AuthProv
   }, []);
 
   const login = async (data: LoginData) => {
-    try {
-      setLoading(true);
-      const response: AuthResponse = await authService.login(data);
+    const response: AuthResponse = await authService.login(data);
+    
+    if (response && response.token && response.userId) {
+      const userData: User = {
+        id: response.userId,
+        name: response.name,
+        email: response.email,
+        role: 0,
+        isActive: true,
+        createdAt: new Date().toISOString(),
+        isDeleted: false,
+      };
       
-      if (response && response.token && response.userId) {
-        const userData: User = {
-          id: response.userId,
-          name: response.name,
-          email: response.email,
-          role: 0,
-          isActive: true,
-          createdAt: new Date().toISOString(),
-          isDeleted: false,
-        };
-        
-        setUser(userData);
-        setToken(response.token);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userData', JSON.stringify(userData));
-      } else {
-        throw new Error('Resposta inválida do servidor');
-      }
-    } catch (error: any) {
-      throw error;
-    } finally {
-      setLoading(false);
+      setUser(userData);
+      setToken(response.token);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('userData', JSON.stringify(userData));
+    } else {
+      throw new Error('Resposta inválida do servidor');
     }
   };
 
