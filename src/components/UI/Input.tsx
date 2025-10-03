@@ -9,6 +9,7 @@ interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  hasError?: boolean;
   label?: string;
   required?: boolean;
   disabled?: boolean;
@@ -64,6 +65,7 @@ const Input: React.FC<InputProps> = ({
   value,
   onChange,
   error,
+  hasError,
   label,
   required,
   disabled,
@@ -85,7 +87,7 @@ const Input: React.FC<InputProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        hasError={!!error}
+        hasError={hasError || !!error}
         required={required}
         disabled={disabled}
         min={min}
