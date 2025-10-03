@@ -143,6 +143,20 @@ const Login: React.FC = () => {
         
         {error && <ErrorMessage>{error}</ErrorMessage>}
         
+        {/* Teste visual temporário */}
+        {error && (
+          <div style={{
+            background: '#dc3545',
+            color: 'white',
+            padding: '10px',
+            borderRadius: '4px',
+            marginBottom: '10px',
+            fontSize: '14px'
+          }}>
+            TESTE: {error}
+          </div>
+        )}
+        
         <Form onSubmit={handleSubmit}>
           <Input
             type="email"
