@@ -68,6 +68,7 @@ const Login: React.FC = () => {
   });
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [isCredentialsError, setIsCredentialsError] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -79,30 +80,44 @@ const Login: React.FC = () => {
       [name]: value,
     }));
     setError('');
+    setIsCredentialsError(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setIsCredentialsError(false);
 
     try {
       await login(formData);
       navigate('/');
     } catch (error: any) {
       let errorMessage = 'Erro ao fazer login';
+      let isCredentials = false;
       
       if (error.status === 401) {
         errorMessage = 'Email ou senha incorretos';
+        isCredentials = true;
       } else if (error.status === 404) {
         errorMessage = 'Servidor não encontrado. Verifique se o backend está rodando.';
       } else if (error.status === 500) {
         errorMessage = 'Erro interno do servidor';
+      } else if (error.message && error.message.includes('credenciais')) {
+        errorMessage = 'Email ou senha incorretos';
+        isCredentials = true;
+      } else if (error.message && error.message.includes('password')) {
+        errorMessage = 'Email ou senha incorretos';
+        isCredentials = true;
+      } else if (error.message && error.message.includes('invalid')) {
+        errorMessage = 'Email ou senha incorretos';
+        isCredentials = true;
       } else if (error.message) {
         errorMessage = error.message;
       }
       
       setError(errorMessage);
+      setIsCredentialsError(isCredentials);
     } finally {
       setLoading(false);
     }
@@ -123,6 +138,7 @@ const Login: React.FC = () => {
             placeholder="Digite seu e-mail"
             value={formData.email}
             onChange={handleChange}
+            hasError={isCredentialsError}
             required
           />
           
@@ -133,6 +149,7 @@ const Login: React.FC = () => {
             placeholder="Digite sua senha"
             value={formData.password}
             onChange={handleChange}
+            hasError={isCredentialsError}
             required
           />
           
