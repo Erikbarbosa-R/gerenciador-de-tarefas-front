@@ -30,6 +30,8 @@ const Title = styled.h1`
 
 const FilterSection = styled.div`
   margin-bottom: 30px;
+  display: block;
+  visibility: visible;
 `;
 
 const FilterHeader = styled.div`
@@ -65,6 +67,8 @@ const FilterContainer = styled.div`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  visibility: visible;
+  opacity: 1;
 `;
 
 
@@ -201,6 +205,8 @@ const TaskList: React.FC = () => {
   if (loading && safeTasks.length === 0) {
     return <LoadingSpinner />;
   }
+
+  console.log('TaskList render - filter:', filter, 'tasks:', safeTasks.length);
 
   return (
     <TaskListContainer>
