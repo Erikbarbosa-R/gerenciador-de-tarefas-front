@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Task } from '../../types';
+import { Task, UpdateTaskData } from '../../types';
 import Button from '../UI/Button';
 import { useTasks } from '../../contexts/TaskContext';
 import { MdCalendarToday, MdDelete } from 'react-icons/md';
@@ -152,7 +152,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
     e?.stopPropagation(); // Previne o clique do card
     try {
       const newStatus = task.status === 2 ? 0 : 2; // Alternar entre PENDING e COMPLETED
-      await updateTask(task.id, { status: newStatus });
+      
+      // Preservar a delegação ao alterar o status
+      const updateData: UpdateTaskData = { 
+        status: newStatus,
+        assignedToUserId: task.assignedToUserId // Manter a delegação atual
+      };
+      
+      await updateTask(task.id, updateData);
     } catch (error) {
     }
   };

@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTasks } from '../../contexts/TaskContext';
 import { useUsers } from '../../contexts/UserContext';
-import { Task } from '../../types';
+import { Task, UpdateTaskData } from '../../types';
 import Button from '../UI/Button';
 import UserSelector from '../UI/UserSelector';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -12,8 +12,7 @@ import {
   MdEdit, 
   MdDelete, 
   MdCalendarToday,
-  MdWarning,
-  MdClose
+  MdWarning
 } from 'react-icons/md';
 import Icon from '../UI/Icon';
 import { formatDate, isOverdue } from '../../utils/dateUtils';
@@ -189,59 +188,6 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
-const AssignmentSection = styled.div`
-  margin-bottom: 20px;
-  padding: 16px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-`;
-
-const AssignmentHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const AssignmentTitle = styled.h3`
-  margin: 0;
-  font-size: 16px;
-  color: #333;
-`;
-
-const RemoveButton = styled.button`
-  background: none;
-  border: none;
-  color: #dc3545;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #f8d7da;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
-  }
-`;
-
-const AssignedUserInfo = styled.div`
-  margin-top: 8px;
-  padding: 8px 12px;
-  background-color: #e7f3ff;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #0066cc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -257,7 +203,14 @@ const TaskDetails: React.FC = () => {
     try {
       // Alternar entre COMPLETED (2) e PENDING (0)
       const newStatus = isTaskCompleted(task) ? 0 : 2;
-      await updateTask(task.id, { status: newStatus });
+      
+      // Preservar a delegação ao alterar o status
+      const updateData: UpdateTaskData = { 
+        status: newStatus,
+        assignedToUserId: task.assignedToUserId // Manter a delegação atual
+      };
+      
+      await updateTask(task.id, updateData);
     } catch (error) {
     }
   };
@@ -283,14 +236,6 @@ const TaskDetails: React.FC = () => {
     }
   };
 
-  const handleRemoveDelegation = async () => {
-    if (!task) return;
-    
-    try {
-      await assignTask(task.id, null);
-    } catch (error) {
-    }
-  };
 
   const getPriorityLabel = (priority: number) => {
     switch (priority) {
