@@ -234,12 +234,6 @@ const TaskList: React.FC = () => {
       )}
 
         <FilterSection>
-          <FilterHeader>
-            <FilterTitle>
-              <Icon icon={MdFilterList} size={20} />
-              Filtros
-            </FilterTitle>
-          </FilterHeader>
 
           <FilterGroup>
           <FilterGroupTitle>Filtros Principais</FilterGroupTitle>
