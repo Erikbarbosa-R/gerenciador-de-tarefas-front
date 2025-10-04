@@ -233,15 +233,15 @@ const TaskList: React.FC = () => {
         </ErrorMessage>
       )}
 
-      <FilterSection>
-        <FilterHeader>
-          <FilterTitle>
-            <Icon icon={MdFilterList} size={20} />
-            Filtros
-          </FilterTitle>
-        </FilterHeader>
+        <FilterSection>
+          <FilterHeader>
+            <FilterTitle>
+              <Icon icon={MdFilterList} size={20} />
+              Filtros
+            </FilterTitle>
+          </FilterHeader>
 
-        <FilterGroup>
+          <FilterGroup>
           <FilterGroupTitle>Filtros Principais</FilterGroupTitle>
           <FilterContainer>
             <FilterButton

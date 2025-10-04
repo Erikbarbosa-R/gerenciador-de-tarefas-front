@@ -100,8 +100,6 @@ const PriorityBadge = styled.span.withConfig({
   font-weight: 500;
   background-color: ${({ priority }) => {
     switch (priority) {
-      case 'critical':
-        return '#f8d7da';
       case 'high':
         return '#f8d7da';
       case 'medium':
@@ -114,8 +112,6 @@ const PriorityBadge = styled.span.withConfig({
   }};
   color: ${({ priority }) => {
     switch (priority) {
-      case 'critical':
-        return '#721c24';
       case 'high':
         return '#721c24';
       case 'medium':
@@ -239,8 +235,6 @@ const TaskDetails: React.FC = () => {
 
   const getPriorityLabel = (priority: number) => {
     switch (priority) {
-      case 3:
-        return 'Crítica';
       case 2:
         return 'Alta';
       case 1:
@@ -254,8 +248,6 @@ const TaskDetails: React.FC = () => {
 
   const getPriorityString = (priority: number) => {
     switch (priority) {
-      case 3:
-        return 'critical';
       case 2:
         return 'high';
       case 1:

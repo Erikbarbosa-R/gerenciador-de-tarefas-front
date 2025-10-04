@@ -103,7 +103,6 @@ const TaskForm: React.FC = () => {
     { value: TaskPriority.LOW.toString(), label: 'Baixa' },
     { value: TaskPriority.MEDIUM.toString(), label: 'Média' },
     { value: TaskPriority.HIGH.toString(), label: 'Alta' },
-    { value: TaskPriority.CRITICAL.toString(), label: 'Crítica' },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

@@ -172,8 +172,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         return 'Média';
       case 0:
         return 'Baixa';
-      case 3:
-        return 'Crítica';
       default:
         return 'Não definida';
     }
