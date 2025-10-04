@@ -146,7 +146,7 @@ A aplicação consome uma API REST com os seguintes endpoints:
 - **Minhas Pendentes**: Tarefas pendentes delegadas para o usuário
 - **Minhas Concluídas**: Tarefas concluídas delegadas para o usuário
 - **Minhas Urgentes**: Tarefas de alta prioridade delegadas para o usuário
-- **Por Status**: Filtro por status específico (0=Pendente, 1=Em Progresso, 2=Concluída)
+- **Por Status**: Filtro por status específico (0=Pendente, 2=Concluída)
 - **Por Prioridade**: Filtro por prioridade específica (0=Baixa, 1=Média, 2=Alta)
 
 ## Status das Tarefas
