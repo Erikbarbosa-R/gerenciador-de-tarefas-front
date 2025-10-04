@@ -206,8 +206,6 @@ const TaskList: React.FC = () => {
     return <LoadingSpinner />;
   }
 
-  console.log('TaskList render - filter:', filter, 'tasks:', safeTasks.length);
-
   return (
     <TaskListContainer>
       <Header>
